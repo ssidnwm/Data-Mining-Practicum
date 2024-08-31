@@ -163,8 +163,43 @@ drm%>%
   separate_rows(Cast, sep = ', ')%>%
   group_by(Cast,Year.of.release)%>%
   summarise(count=n(),.groups='drop')%>%
-  filter(Year.of.release == 2020)%>%
+  filter(Year.of.release == 2017)%>%
   arrange(desc(count))
+#이제 년도별로 가장 높은 count를 가진 사람을 새로운 df로 찾아보자.
+cast_count<-drm%>%
+  separate_rows(Cast, sep = ', ')%>%
+  group_by(Cast,Year.of.release)%>%
+  summarise(count=n(),.groups='drop')%>%
+  group_by(Year.of.release)%>%
+  slice_max(count,n=3, with_ties = FALSE)
+cast_count%>%
+  count(Cast)
+library(ggplot2)
+cast_count %>%
+  ggplot(aes(x = Year.of.release, y  = count))+
+  geom_point()
+
+cast_count%>%
+  filter(Cast %in% c("Lee Joon Hyuk","Ahn Bo Hyun","Shin Hye Sun"))%>%
+  ggplot(aes(x = Year.of.release, y = count, color = Cast))+
+  geom_point()# 이렇게 확인하니 전반적인 추세가 보이지 않는다.
+
+new_cast <- drm%>%
+  separate_rows(Cast, sep = ', ')%>%
+  group_by(Cast,Year.of.release)%>%
+  summarise(count=n(),.groups='drop')%>%
+  group_by(Year.of.release)%>%
+  filter(Cast %in% c("Lee Joon Hyuk","Ahn Bo Hyun","Shin Hye Sun","Jung So Min", "Kim Ji Won"))
+  
+new_cast%>%
+  filter(Cast %in% c("Lee Joon Hyuk","Ahn Bo Hyun","Shin Hye Sun","Jung So Min", "Kim Ji Won"))%>%
+  ggplot(aes(x = Year.of.release, y = count, color = Cast))+
+  geom_point()+
+  geom_line()
+
+#년도를 다양하게 바꿔가며 가장 많이 출연한 출연자들을 확인해 본다.
+
+
 
 #Q4Compare OTT and cable TV channel, which one more popular and highly rated? 
 #Support your argument with the data? Is it changed over time? 
@@ -234,6 +269,17 @@ drm%>%
 
 #4-2:mutate_all()
 #모든 열에 대해 같은 함수를 적용시킴
+#mutate(across())와 동일함,
+drm %>%
+  group_by(Rank)%>%
+  mutate_all(~. *2)
+
+drm %>%
+  group_by(Rank)%>%
+  mutate(across(~. *2))
+
+
+
 
 #mutate_if()
 #특정 열에만 함수를 적용시킴
@@ -253,8 +299,19 @@ drm%>%
   group_by(Director,Screenwriter)%>%
   summarise(count=n())
 #summarise_if()
+#특정 조건을 만족하는 열에 대해서만 요약을 수행
+drm%>%
+  summarise_if(is.numeric,sum)
 
 #summarise_at()
+#특정 열을 지정하여, 그 열들에 대한 요약 통계를 계산함함
+drm%>%
+  group_by(Year.of.release)%>%
+  summarise_at(vars(Number.of.Episodes),mean)%>%
+  ggplot(aes(x = Year.of.release, y = Number.of.Episodes))+
+  geom_point()
+#최근 2020년대에 들어서는 이전처럼 드라마들의 ep수가 적은 것이 선호되고 있다.
+
 
 #4-4:across()
 #동일 내용을 반복하는 함수,
