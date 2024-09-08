@@ -19,7 +19,10 @@ apt_data %>%
   group_by(bathrooms,bedrooms)%>%
   mutate(price = as.numeric(gsub("[^0-9.-]", "", price)))%>%
   summarise(room_price = mean(price, na.rm = T)) %>%
+  select(bathrooms,bedrooms,room_price)%>%
   arrange(room_price)
+#필요없는 부분은 bt, bd에서 제거하기
+
 
 #Q2. Find out the top 10 cities with most expensive and cheapest rental price. 
 #Use the price normalized by the size (square feet) for the fairness.
@@ -271,12 +274,12 @@ drm%>%
 #모든 열에 대해 같은 함수를 적용시킴
 #mutate(across())와 동일함,
 drm %>%
-  group_by(Rank)%>%
-  mutate_all(~. *2)
+  group_by(Rank) %>%
+  mutate_all(~ if(is.numeric(.)) . * 2 else .)
 
 drm %>%
-  group_by(Rank)%>%
-  mutate(across(~. *2))
+  group_by(Rank) %>%
+  mutate(across(where(is.numeric), ~ . * 2))
 
 
 
@@ -285,13 +288,15 @@ drm %>%
 #특정 열에만 함수를 적용시킴
 drm%>%
   mutate_if(is.numeric,~. *2)%>%
-  select(Name,Year.of.release,Number.of.Episodes,Rating,Rank)
+  select(Name,Year.of.release,Number.of.Episodes,Rating,Rank)%>%
+  head(10)
 #숫자형 데이터의 값을 2배로 만듬
 #mutate_at()
 #특정 열에 대해 함수를 적용시키나, 조건이 아닌 이름으로 정함
 drm%>%
   mutate_at(vars(Cast), ~ str_split(., ", "))%>%
-  select(Name,Cast)
+  select(Name,Cast)%>%
+  head(10)
 #mutate_at의 경우, sep을 사용할수 없고 대신 string()의 str_split을 사용해야 한다.
 #4-3:summarise_all()
 #mutate_all과 같이 모든 값에 대해 요약통계를 함,
@@ -316,9 +321,10 @@ drm%>%
 #4-4:across()
 #동일 내용을 반복하는 함수,
 #all, if, at을 굳이 mutate나 summarise에 적용할때, summarise_at, mutate_all을 쓰지 않고도 가능하게 한다.
-drm%>%
+drm%>%#across
   mutate(across(where(is.numeric),~. *2))%>%
-  select(Name,Year.of.release,Number.of.Episodes,Rating,Rank)
+  select(Name,Year.of.release,Number.of.Episodes,Rating,Rank)%>%
+  head(10)
 
 #if any()
 #조건을 만족하는 열이 하나라도 있는 행을 선택함
@@ -333,7 +339,11 @@ drm%>%
   select(Name,Original.Network)
 #4-5:sample n()
 #무작위 n개의 행을 샘플링할때 사용함 slice sample과 동일
-
+drm%>%
+  group_by(Content.Rating)%>%
+  filter(Content.Rating == '15+ - Teens 15 or older')%>%
+  sample_n(size = 3)%>%
+  select(Name, Content.Rating)
 #sampel frac()
 #frac은 비율로 계산한다는 점에서 n과 다름
 drm%>%
