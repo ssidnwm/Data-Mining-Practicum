@@ -37,30 +37,30 @@
     ```
     
     ```jsx
-    JobP <- read.csv("C:/Users/silkj/Desktop/한동대학교/5학기/데이터 마이닝 실습/Data-Mining-Practicum/myR/job_postings.csv")
+    JobP <- read.csv("https://raw.githubusercontent.com/ssidnwm/Data-Mining-Practicum/main/myR/job_postings.csv")
     jobP는 직책, 설명, 급여, 근무 유형, 위치 등 각 채용 공고에 대한 자세한 정보가 포함되어 있음
     
     summary(JobP)
     
-    comp <- read.csv("C:/Users/silkj/Desktop/한동대학교/5학기/데이터 마이닝 실습/Data-Mining-Practicum/myR/companies.csv")
+    comp <- read.csv("https://raw.githubusercontent.com/ssidnwm/Data-Mining-Practicum/main/myR/companies.csv")
     comp에는 회사명, 웹사이트, 설명, 규모, 위치 등 채용공고를 올린 각 회사에 대한 자세한 정보가 포함되어 있음
     
-    comp_i <- read.csv("C:/Users/silkj/Desktop/한동대학교/5학기/데이터 마이닝 실습/Data-Mining-Practicum/myR/company_industries.csv")
+    comp_i <- read.csv("https://raw.githubusercontent.com/ssidnwm/Data-Mining-Practicum/main/myR/company_industries.csv")
     comp_i에는 회사별 id와 산업에 대한 정보가 포함되어있어, comp에 회사 id와 join하면 좋을 것 같다
     
-    comp_s <- read.csv("C:/Users/silkj/Desktop/한동대학교/5학기/데이터 마이닝 실습/Data-Mining-Practicum/myR/company_specialities.csv")
+    comp_s <- read.csv("https://raw.githubusercontent.com/ssidnwm/Data-Mining-Practicum/main/myR/company_specialities.csv")
     comp_s에는 회사별 id와 전문분야에 대한 정보가 포함되어 있다.
     
-    emp_c <- read.csv("C:/Users/silkj/Desktop/한동대학교/5학기/데이터 마이닝 실습/Data-Mining-Practicum/myR/employee_counts.csv")
+    emp_c <- read.csv("https://raw.githubusercontent.com/ssidnwm/Data-Mining-Practicum/main/myR/employee_counts.csv")
     emp_c에는 각 회사별 id와 직원, 팔로워 수에 대한 정보가 포함되어 있다.
     
-    ben <- read.csv("C:/Users/silkj/Desktop/한동대학교/5학기/데이터 마이닝 실습/Data-Mining-Practicum/myR/benefits.csv")
+    ben <- read.csv("https://raw.githubusercontent.com/ssidnwm/Data-Mining-Practicum/main/myR/benefits.csv")
     ben에는 직업 id와 관련된 혜택에 대한 정보가 있다.
     
-    job_i <- read.csv("C:/Users/silkj/Desktop/한동대학교/5학기/데이터 마이닝 실습/Data-Mining-Practicum/myR/job_industries.csv")
+    job_i <- read.csv("https://raw.githubusercontent.com/ssidnwm/Data-Mining-Practicum/main/myR/job_industries")
     job_i에는 각 직업과 관련된 산업에 대한 정보가 있다.
     
-    job_s <- read.csv("C:/Users/silkj/Desktop/한동대학교/5학기/데이터 마이닝 실습/Data-Mining-Practicum/myR/job_skills.csv")
+    job_s <- read.csv("https://raw.githubusercontent.com/ssidnwm/Data-Mining-Practicum/main/myR/job_skills.csv")
     jos_s에는 job id와 직업과 관련된 스킬이 있다.
     ```
     
@@ -69,7 +69,8 @@
     ## Task1: 모든 csv파일을 각각의 dataFrame으로 하여 각 데이터별 column의 의미와 type, value등을 파악하여 보자
     
     ```jsx
-    JobP <- read.csv("C:/Users/silkj/Desktop/한동대학교/5학기/데이터 마이닝 실습/Data-Mining-Practicum/myR/job_postings.csv")
+   JobP <- read.csv("https://raw.githubusercontent.com/ssidnwm/Data-Mining-Practicum/main/myR/job_postings.csv")
+    jobP는 직책, 설명, 급여, 근무 유형, 위치 등 각 채용 공고에 대한 자세한 정보가 포함되어 있음
     jobP는 직책, 설명, 급여, 근무 유형, 위치 등 각 채용 공고에 대한 자세한 정보가 포함되어 있음
     ```
     
@@ -109,7 +110,7 @@
     
     ```jsx
     
-    job_i <- read.csv("C:/Users/silkj/Desktop/한동대학교/5학기/데이터 마이닝 실습/Data-Mining-Practicum/myR/job_industries.csv")
+    job_i <- read.csv("https://raw.githubusercontent.com/ssidnwm/Data-Mining-Practicum/main/myR/job_industries")
     job_i에는 각 직업과 관련된 산업에 대한 정보가 있다.
     ```
     
@@ -125,7 +126,7 @@
     특이사항으로 산업코드가 숫자형식으로 되어있어, 어떤 산업인지 확인이 어려움
     
     ```jsx
-    job_s <- read.csv("C:/Users/silkj/Desktop/한동대학교/5학기/데이터 마이닝 실습/Data-Mining-Practicum/myR/job_skills.csv")
+    job_s <- read.csv("https://raw.githubusercontent.com/ssidnwm/Data-Mining-Practicum/main/myR/job_skills.csv")
     jos_s에는 job id와 직업과 관련된 스킬이 있다.
     ```
     
@@ -141,7 +142,7 @@
     특이사항으로  skill_abr에는 직무의 약어가 쓰여 있으며, 하나의 직업이 여러개의 약어를 가질 수 있는 것으로 보임. 이에대해 각 직업별 약어를 하나의 변수에 넣는것이 필요하다고 생각함
     
     ```jsx
-    ben <- read.csv("C:/Users/silkj/Desktop/한동대학교/5학기/데이터 마이닝 실습/Data-Mining-Practicum/myR/benefits.csv")
+    ben <- read.csv("https://raw.githubusercontent.com/ssidnwm/Data-Mining-Practicum/main/myR/benefits.csv")
     ben에는 직업 id와 관련된 혜택에 대한 정보가 있다.
     ```
     
@@ -158,7 +159,7 @@
     특이사항으로 ben 데이터프레임은  tidy가 적용되어 직업코드별 혜택이 모아져 있으므로 spread를 사용하여 혜택을 바꾸는 작업이 선행되어야 함
     
     ```jsx
-    comp <- read.csv("C:/Users/silkj/Desktop/한동대학교/5학기/데이터 마이닝 실습/Data-Mining-Practicum/myR/companies.csv")
+    comp <- read.csv("https://raw.githubusercontent.com/ssidnwm/Data-Mining-Practicum/main/myR/companies.csv")
     comp에는 회사명, 웹사이트, 설명, 규모, 위치 등 채용공고를 올린 각 회사에 대한 자세한 정보가 포함되어 있음
     ```
     
@@ -182,7 +183,7 @@
     특이사항으로 회사 뿐 아니라 지역에 대한 정보가 많아 하나로 합쳐도 괜찮을듯, 혹은 그룹화를 통해 같은 지역에 위치한 도시 혹은 국가에 대해 확인이 가능함
     
     ```jsx
-    comp_i <- read.csv("C:/Users/silkj/Desktop/한동대학교/5학기/데이터 마이닝 실습/Data-Mining-Practicum/myR/company_industries.csv")
+    comp_i <- read.csv("https://raw.githubusercontent.com/ssidnwm/Data-Mining-Practicum/main/myR/company_industries.csv")
     comp_i에는 회사별 id와 산업에 대한 정보가 포함되어있어, comp에 회사 id와 join하면 좋을 것 같다
     ```
     
@@ -198,7 +199,7 @@
     특이사항으로 하나의 company_id에 대해 중복되어 행이 만들어진 경우가 있어 전처리가 필요함, 다른 df와 병합할때 이 부분을 고려해야 함 시작부터 company_id가 중복되는 값들을 확인한 후 이 값들의 industry도 동일하다면 그 값은 지워서 데이터의 중복을 피하고자 함
     
     ```jsx
-    comp_s <- read.csv("C:/Users/silkj/Desktop/한동대학교/5학기/데이터 마이닝 실습/Data-Mining-Practicum/myR/company_specialities.csv")
+    comp_s <- read.csv("https://raw.githubusercontent.com/ssidnwm/Data-Mining-Practicum/main/myR/company_specialities.csv")
     comp_s에는 회사별 id와 전문분야에 대한 정보가 포함되어 있다.
     ```
     
@@ -214,7 +215,7 @@
     특이사항으로, 하나의 회사가 많은 양의 전문분야를 가지고 있어 데이터의 크기가 상당히 부풀려져 있음. 이를 정리한 후 병합을 시도해야 함
     
     ```jsx
-    emp_c <- read.csv("C:/Users/silkj/Desktop/한동대학교/5학기/데이터 마이닝 실습/Data-Mining-Practicum/myR/employee_counts.csv")
+    emp_c <- read.csv("https://raw.githubusercontent.com/ssidnwm/Data-Mining-Practicum/main/myR/employee_counts.csv")
     emp_c에는 각 회사별 id와 직원, 팔로워 수에 대한 정보가 포함되어 있다.
     ```
     
@@ -255,9 +256,9 @@
     
     마지막으로 comp_c도 병합
     
-    ![image.png](image.png)
+    ![image.png](https://github.com/ssidnwm/Data-Mining-Practicum/blob/main/Practice2/image.png?raw=true)
     
-    ![image.png](image%201.png)
+    ![image.png](https://github.com/ssidnwm/Data-Mining-Practicum/blob/main/Practice2/image%201.png?raw=true)
     
     ## Task 1-3: 계획된 방법을 사용하여 실제 병합을 진행한 후, 데이터프레임을 점검하여, 정상적으로 병합되었는지 확인 체크리스트를 통해 병합이 잘 되었는지 확인하고, 최대한 오류가 적은 병합을 완료하자
     
@@ -304,7 +305,7 @@
     #이후 industry_id가 수치형 변수이기 때문에 이를 character로 바꾸어준 후 시각화로 표현함
     ```
     
-    ![image.png](image%202.png)
+    ![image.png](https://github.com/ssidnwm/Data-Mining-Practicum/blob/main/Practice2/image%202.png?raw=true)
     
     보는바와 같이 industry_id가 너무 많아 정확한 확인이 어려움
     
@@ -321,7 +322,7 @@
       select(mean_salary_range,industry_id)
     ```
     
-    ![image.png](image%203.png)
+    ![image.png](https://github.com/ssidnwm/Data-Mining-Practicum/blob/main/Practice2/image%203.png?raw=true)
     
     산업코드 113, 129, 141이 가장 salary_range가 크다, 이는 곧 최대급여와 최소급여간의 격차가 크다는 것을 의미한다. 
     
@@ -356,7 +357,7 @@
     
     ```
     
-    ![image.png](image%204.png)
+    ![image.png](https://github.com/ssidnwm/Data-Mining-Practicum/blob/main/Practice2/image%204.png?raw=true)
     
     기술 수준에 따라 가격격차가 점점 올라가는것이 확인됨.
     
@@ -374,7 +375,7 @@
     #직업별 요구하는 기술 수준에 따른 salary range를 계산하였다.
     ```
     
-    ![image.png](image%205.png)
+    ![image.png](https://github.com/ssidnwm/Data-Mining-Practicum/blob/main/Practice2/image%205.png?raw=true)
     
     ### 회사의 규모(직원수)가 많은 회사는 모집도 많이 하는지
     
@@ -398,13 +399,13 @@
     
     ```
     
-    ![image.png](image%206.png)
+    ![image.png](https://github.com/ssidnwm/Data-Mining-Practicum/blob/main/Practice2/image%206.png?raw=true)
     
     직원수를 보면 누구나 알듯한 대기업이며, 이 대기업들의 규모에 대해 리쿠르팅 수는 다음과 같았다.
     
     이번에는 arrange를 리쿠르팅 수로 다시 계산해 보았다.
     
-    ![image.png](image%207.png)
+    ![image.png](https://github.com/ssidnwm/Data-Mining-Practicum/blob/main/Practice2/image%207.png?raw=true)
     
     아마존과 구글 외에 다른 기업은 규모가 다른 대기업에 비해서는 조금 적은 거 같다. 
     
@@ -426,7 +427,7 @@
      3
     ```
     
-    ![image.png](image%208.png)
+    ![image.png](https://github.com/ssidnwm/Data-Mining-Practicum/blob/main/Practice2/image%208.png?raw=true)
     
     대부분의 모집이 직원수와 리쿠르팅이 많이 않지만 리쿠르팅이 많은 기업들은 대부분 중견 이상의 기업임을 확인할수 있다.
     
@@ -446,7 +447,7 @@
     
     대부분의 국가에서 IT기술에 대한 직업 리쿠르팅이 많은 것을 확인할 수 있고 그중에서도 미국에서의 IT기업 수요가 상당하다는 것을 확인할 수 있다. 여기서 추가로 미국에 조금 더 집중해보자
     
-    ![image.png](image%209.png)
+    ![image.png](https://github.com/ssidnwm/Data-Mining-Practicum/blob/main/Practice2/image%209.png?raw=true)
     
     ```jsx
     job%>%
@@ -460,7 +461,7 @@
     #미국에서 리쿠르팅한 직업들의 특성수를 조사해 보았다.
     ```
     
-    ![image.png](image%2010.png)
+    ![image.png](https://github.com/ssidnwm/Data-Mining-Practicum/blob/main/Practice2/image%2010.png?raw=true)
     
     IT업무와 영업, 관리직종 순으로 높은 순위를 기록하고 있는 것을 볼 수 있었다.
     
@@ -514,7 +515,7 @@
       arrange(desc(min_salary))
     ```
     
-    ![image.png](image%2011.png)
+    ![image.png](https://github.com/ssidnwm/Data-Mining-Practicum/blob/main/Practice2/image%2011.png?raw=true)
     
     연구 인턴쉽, 지휘자 연수생 - 1차 리콜- 얼라이언스, 텍사스주, 이제조 공정 엔지니어 인턴, 2024 아마존 운영 재무 순환 프로그램 여름 인턴십 등등이 확인되었다.
     
@@ -533,6 +534,6 @@
       arrange(desc(min_salary))
     ```
     
-    ![image.png](image%2012.png)
+    ![image.png](https://github.com/ssidnwm/Data-Mining-Practicum/blob/main/Practice2/image%2012.png?raw=true)
     
     아무래도 Full Time근무를 더 선호하므로 나는 최저급여가 높은순으로 선택하는게 좋은 것 같다.
