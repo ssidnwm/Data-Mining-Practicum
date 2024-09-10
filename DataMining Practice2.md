@@ -69,9 +69,9 @@
     ## Task1: 모든 csv파일을 각각의 dataFrame으로 하여 각 데이터별 column의 의미와 type, value등을 파악하여 보자
     
     ```jsx
-   JobP <- read.csv("https://raw.githubusercontent.com/ssidnwm/Data-Mining-Practicum/main/myR/job_postings.csv")
+    JobP <- read.csv("https://raw.githubusercontent.com/ssidnwm/Data-Mining-Practicum/main/myR/job_postings.csv")
     jobP는 직책, 설명, 급여, 근무 유형, 위치 등 각 채용 공고에 대한 자세한 정보가 포함되어 있음
-    jobP는 직책, 설명, 급여, 근무 유형, 위치 등 각 채용 공고에 대한 자세한 정보가 포함되어 있음
+    
     ```
     
     링크드인에 올라간 job posting DF, 총 27개의 변수가 있으며 각각에 대한 설명 15886행
@@ -161,6 +161,7 @@
     ```jsx
     comp <- read.csv("https://raw.githubusercontent.com/ssidnwm/Data-Mining-Practicum/main/myR/companies.csv")
     comp에는 회사명, 웹사이트, 설명, 규모, 위치 등 채용공고를 올린 각 회사에 대한 자세한 정보가 포함되어 있음
+    
     ```
     
     회사에 대한 구체적인 정보를 가진 df, 10개 변수 6063행
@@ -185,6 +186,7 @@
     ```jsx
     comp_i <- read.csv("https://raw.githubusercontent.com/ssidnwm/Data-Mining-Practicum/main/myR/company_industries.csv")
     comp_i에는 회사별 id와 산업에 대한 정보가 포함되어있어, comp에 회사 id와 join하면 좋을 것 같다
+    
     ```
     
     회사별 id와 산업에 대한 정보, 2개 변수 15880행
@@ -256,9 +258,9 @@
     
     마지막으로 comp_c도 병합
     
-    ![image.png](https://github.com/ssidnwm/Data-Mining-Practicum/blob/main/Practice2/image.png?raw=true)
+    ![image.png](image.png)
     
-    ![image.png](https://github.com/ssidnwm/Data-Mining-Practicum/blob/main/Practice2/image%201.png?raw=true)
+    ![image.png](image%201.png)
     
     ## Task 1-3: 계획된 방법을 사용하여 실제 병합을 진행한 후, 데이터프레임을 점검하여, 정상적으로 병합되었는지 확인 체크리스트를 통해 병합이 잘 되었는지 확인하고, 최대한 오류가 적은 병합을 완료하자
     
@@ -268,8 +270,58 @@
     job_s <- job_s %>%
       group_by(job_id) %>%
       summarise(skill_abr_combined = paste(skill_abr, collapse = ", "))
-    #jos_s를 평합에 용이하도록 skill_abr 변수의 내용들을 하나의 job_id에 밀어넣음
+    #jos_s를 병합에 용이하도록 skill_abr 변수의 내용들을 하나의 job_id에 밀어넣음
     
+    ben<- ben%>%
+      filter(inferred >= 1)%>%
+      group_by(job_id)%>%
+      summarise(benif = paste(type, collapse = ", "))
+    
+    #혜택에 대해서 혜택이 없는 행을 제거한 후, 하나의 id에 병합
+    
+    job_i<-job_i%>%
+      group_by(job_id)%>%
+      summarise(industry_id = paste(industry_id, collapse = ", "))
+    #산업에 관련해서도 병합
+    
+    job_full<-JobP%>%
+      left_join(job_i, by = "job_id")%>%
+      left_join(job_s, by = "job_id")%>%
+      left_join(ben,by = "job_id")
+    #job에 대하여 병합
+    
+    comp_i3<-comp_i %>%
+      group_by(company_id, industry) %>%  # company_id와 industry 둘 다 기준으로 그룹화
+      filter(n() > 1) %>%                 # 중복된 항목만 필터링
+      ungroup() %>%                       # 그룹화 해제
+      distinct(company_id, industry, .keep_all = TRUE)%>%# 중복된 항목 중 하나만 남기기 distinct를 사용함
+      group_by(company_id)%>%
+      summarise(industry = paste(industry, collapse = ", "))
+    #회사별 산업에 대하여 중복된 내용을 필터링한 후 병합
+    
+    comp_s<-comp_s%>%
+      group_by(company_id)%>%
+      summarise(speciality = paste(speciality, collapse = ", "))
+    #회사별 기술에 대해서 동일 id에 대해 하나의 행으로 정렬
+    
+    emp_c<-emp_c %>%
+      group_by(company_id) %>%
+      filter(n() > 1) %>%
+      ungroup()%>%
+      arrange(company_id)%>%
+      distinct(company_id, .keep_all = TRUE)
+    #회사별 인원수에 대해서도 동일하게 진행
+    
+    comp_full<-comp%>%
+      left_join(comp_i3,by = 'company_id')%>%
+      left_join(comp_s, by = 'company_id')%>%
+      left_join(emp_c, by = 'company_id')
+      
+    #회사에 대해 병합 후
+    
+    job<-job_full%>%
+      left_join(comp_full,by = "company_id")
+    #company_id를 기반으로 jobP와 comp를 병합
     ```
     
     확인 체크리스트
@@ -305,7 +357,7 @@
     #이후 industry_id가 수치형 변수이기 때문에 이를 character로 바꾸어준 후 시각화로 표현함
     ```
     
-    ![image.png](https://github.com/ssidnwm/Data-Mining-Practicum/blob/main/Practice2/image%202.png?raw=true)
+    ![image.png](image%202.png)
     
     보는바와 같이 industry_id가 너무 많아 정확한 확인이 어려움
     
@@ -322,7 +374,7 @@
       select(mean_salary_range,industry_id)
     ```
     
-    ![image.png](https://github.com/ssidnwm/Data-Mining-Practicum/blob/main/Practice2/image%203.png?raw=true)
+    ![image.png](image%203.png)
     
     산업코드 113, 129, 141이 가장 salary_range가 크다, 이는 곧 최대급여와 최소급여간의 격차가 크다는 것을 의미한다. 
     
@@ -357,7 +409,7 @@
     
     ```
     
-    ![image.png](https://github.com/ssidnwm/Data-Mining-Practicum/blob/main/Practice2/image%204.png?raw=true)
+    ![image.png](image%204.png)
     
     기술 수준에 따라 가격격차가 점점 올라가는것이 확인됨.
     
@@ -375,7 +427,7 @@
     #직업별 요구하는 기술 수준에 따른 salary range를 계산하였다.
     ```
     
-    ![image.png](https://github.com/ssidnwm/Data-Mining-Practicum/blob/main/Practice2/image%205.png?raw=true)
+    ![image.png](image%205.png)
     
     ### 회사의 규모(직원수)가 많은 회사는 모집도 많이 하는지
     
@@ -399,13 +451,13 @@
     
     ```
     
-    ![image.png](https://github.com/ssidnwm/Data-Mining-Practicum/blob/main/Practice2/image%206.png?raw=true)
+    ![image.png](image%206.png)
     
     직원수를 보면 누구나 알듯한 대기업이며, 이 대기업들의 규모에 대해 리쿠르팅 수는 다음과 같았다.
     
     이번에는 arrange를 리쿠르팅 수로 다시 계산해 보았다.
     
-    ![image.png](https://github.com/ssidnwm/Data-Mining-Practicum/blob/main/Practice2/image%207.png?raw=true)
+    ![image.png](image%207.png)
     
     아마존과 구글 외에 다른 기업은 규모가 다른 대기업에 비해서는 조금 적은 거 같다. 
     
@@ -427,9 +479,35 @@
      3
     ```
     
-    ![image.png](https://github.com/ssidnwm/Data-Mining-Practicum/blob/main/Practice2/image%208.png?raw=true)
+    ![image.png](image%208.png)
     
     대부분의 모집이 직원수와 리쿠르팅이 많이 않지만 리쿠르팅이 많은 기업들은 대부분 중견 이상의 기업임을 확인할수 있다.
+    
+    보다 시각화를 위해 직원수가 500명 이상, 그리고 리쿠르팅 수가 50회 이상인 경우를 찾아 선을 그어보겠다.
+    
+    ```jsx
+    job%>%
+      select(company_id,employee_count,name)%>%
+      filter(complete.cases(.))%>%
+      group_by(company_id)%>%
+      mutate(Number_of_recruits  = n())%>%
+      distinct(company_id, .keep_all = TRUE)%>%
+      ggplot(aes(x = Number_of_recruits, y = employee_count))+
+      geom_point()+
+      scale_y_log10("Employee Count", labels = scales::trans_format("log10", scales::math_format(10^.x)))+
+      ggtitle("Recruits to Employee Count")+
+      labs(x = "Number Of Recruits")+
+      geom_hline(yintercept = 500, linetype = "dashed", color = "blue") +
+      geom_vline(xintercept = 50, linetype = "dashed", color = "red")
+    ```
+    
+    ![image.png](image%209.png)
+    
+    리쿠르팅이 50회를 넘는 거의 대부분의 경우, 직원의 수가 500명 이상임을 확인할 수 있다. 조금 더 선을 내려서 직원의 수를 100명 이상으로 제한한다면 
+    
+    ![image.png](image%2010.png)
+    
+    50회 이상 리쿠르팅한 모든 기업이 최소 100명 이상의 직원을 가졌음을 알 수 있다.
     
     ### 국가나 지역에 따른 job에서 어떤 차이가 있는지
     
@@ -447,7 +525,7 @@
     
     대부분의 국가에서 IT기술에 대한 직업 리쿠르팅이 많은 것을 확인할 수 있고 그중에서도 미국에서의 IT기업 수요가 상당하다는 것을 확인할 수 있다. 여기서 추가로 미국에 조금 더 집중해보자
     
-    ![image.png](https://github.com/ssidnwm/Data-Mining-Practicum/blob/main/Practice2/image%209.png?raw=true)
+    ![image.png](image%2011.png)
     
     ```jsx
     job%>%
@@ -461,7 +539,7 @@
     #미국에서 리쿠르팅한 직업들의 특성수를 조사해 보았다.
     ```
     
-    ![image.png](https://github.com/ssidnwm/Data-Mining-Practicum/blob/main/Practice2/image%2010.png?raw=true)
+    ![image.png](image%2012.png)
     
     IT업무와 영업, 관리직종 순으로 높은 순위를 기록하고 있는 것을 볼 수 있었다.
     
@@ -515,7 +593,7 @@
       arrange(desc(min_salary))
     ```
     
-    ![image.png](https://github.com/ssidnwm/Data-Mining-Practicum/blob/main/Practice2/image%2011.png?raw=true)
+    ![image.png](image%2013.png)
     
     연구 인턴쉽, 지휘자 연수생 - 1차 리콜- 얼라이언스, 텍사스주, 이제조 공정 엔지니어 인턴, 2024 아마존 운영 재무 순환 프로그램 여름 인턴십 등등이 확인되었다.
     
@@ -534,6 +612,6 @@
       arrange(desc(min_salary))
     ```
     
-    ![image.png](https://github.com/ssidnwm/Data-Mining-Practicum/blob/main/Practice2/image%2012.png?raw=true)
+    ![image.png](image%2014.png)
     
     아무래도 Full Time근무를 더 선호하므로 나는 최저급여가 높은순으로 선택하는게 좋은 것 같다.

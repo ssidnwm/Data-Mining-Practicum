@@ -6,6 +6,8 @@ library(ggplot2)
 JobP <- read.csv("C:/Users/silkj/Desktop/한동대학교/5학기/데이터 마이닝 실습/Data-Mining-Practicum/myR/job_postings.csv")
 jobP는 직책, 설명, 급여, 근무 유형, 위치 등 각 채용 공고에 대한 자세한 정보가 포함되어 있음
 
+
+
 summary(JobP)
 
 comp <- read.csv("C:/Users/silkj/Desktop/한동대학교/5학기/데이터 마이닝 실습/Data-Mining-Practicum/myR/companies.csv")
@@ -34,6 +36,8 @@ job_postings
 head(JobP)
 summary(JobP)
 #JobP에 관련해서, 총 27개의 변수가 있고, 이 내용에는 회사 id, 
+
+JobP$remote_allowed
 
 unique(ben$type)
 head(ben)
@@ -223,9 +227,12 @@ job%>%
   geom_point()+
   scale_y_log10("Employee Count", labels = scales::trans_format("log10", scales::math_format(10^.x)))+
   ggtitle("Recruits to Employee Count")+
-  labs(x = "Number Of Recruits")
+  labs(x = "Number Of Recruits")+
+  geom_hline(yintercept = 100, linetype = "dashed", color = "blue") +
+  geom_vline(xintercept = 50, linetype = "dashed", color = "red")
   
-  
+
+
 
 unique(job$country)
 
