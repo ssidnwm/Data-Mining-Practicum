@@ -537,3 +537,18 @@ data%>%
   filter(Start.Year == 2014)%>%
   select(Country,No..Affected)%>%
   filter(!is.na(No..Affected))
+
+
+data%>%
+  filter(Disaster.Type == "Storm")%>%
+  filter(Country == "Republic of Korea") %>%
+  group_by(Start.Year) %>%
+  summarise(
+    Total_Affected = sum(No..Affected, na.rm = TRUE),   # 피해자 수 총합
+    Frequency = n()                                     # 재해 발생 빈도 (건수)
+  ) %>%
+  mutate(Affected_per_Event = Total_Affected / Frequency)%>%
+  filter(Affected_per_Event > 1)%>%
+  ggplot(aes(x = Start.Year,  y = Affected_per_Event))+
+  geom_col()+
+  labs(title = "한국 년도별 폭풍피해 추산",x = "년도", y = "재해당 피해자 수")
